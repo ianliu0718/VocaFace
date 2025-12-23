@@ -3,15 +3,16 @@
     --neon-pink: #ff00ff;
     --neon-purple: #9d00ff;
     --bg-dark: #050510;
-    --bg-panel: rgba(10, 10, 30, 0.8);
-    --font-orbitron: 'Orbitron', sans-serif;
-    --font-rajdhani: 'Rajdhani', sans-serif;
+    --bg-panel: rgba(10, 10, 30, 0.85);
+    --font-orbitron: 'Orbitron', 'Microsoft JhengHei', sans-serif;
+    --font-rajdhani: 'Rajdhani', 'Microsoft JhengHei', sans-serif;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -19,8 +20,10 @@ body {
     color: white;
     font-family: var(--font-rajdhani);
     height: 100vh;
+    height: 100dvh;
+    /* Dynamic Viewport Height for mobile */
     overflow: hidden;
-    background-image: 
+    background-image:
         linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
         url('https://images.unsplash.com/photo-1535868463750-c78d9543614f?q=80&w=2676&auto=format&fit=crop');
     background-size: cover;
@@ -30,10 +33,23 @@ body {
     align-items: center;
 }
 
+.watermark {
+    position: fixed;
+    bottom: 10px;
+    right: 15px;
+    font-family: var(--font-orbitron);
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 1rem;
+    pointer-events: none;
+    z-index: 9999;
+}
+
 .container {
     width: 100%;
     max-width: 800px;
-    height: 95vh;
+    height: 98vh;
+    /* Slightly less than full height */
+    height: 98dvh;
     background: var(--bg-panel);
     border: 1px solid var(--neon-blue);
     position: relative;
@@ -41,30 +57,30 @@ body {
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
-    clip-path: polygon(
-        0 0, 100% 0, 
-        100% 95%, 95% 100%, 
-        0 100%, 0 5%
-    );
+    /* Simplified clip-path for better mobile support */
+    clip-path: polygon(0 0, 100% 0,
+            100% 100%, 95% 100%,
+            0 100%);
 }
 
 header {
-    padding: 20px;
+    padding: 15px;
     text-align: center;
     border-bottom: 1px solid rgba(0, 243, 255, 0.3);
+    flex-shrink: 0;
 }
 
 h1 {
     font-family: var(--font-orbitron);
     color: var(--neon-blue);
-    font-size: 2.5rem;
+    font-size: 2rem;
     text-shadow: 0 0 10px var(--neon-blue);
     letter-spacing: 2px;
 }
 
 .subtitle {
     color: var(--neon-pink);
-    letter-spacing: 3px;
+    letter-spacing: 1px;
     font-size: 0.8rem;
     margin-top: 5px;
 }
@@ -73,14 +89,17 @@ main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    gap: 20px;
+    padding: 10px;
+    gap: 10px;
     position: relative;
+    overflow: hidden;
+    /* Prevent scrolling inside main */
 }
 
 /* Visualizer Area */
 .visualizer-container {
-    height: 150px;
+    height: 100px;
+    /* Reduced height on mobile */
     background: rgba(0, 0, 0, 0.5);
     border: 1px solid var(--neon-purple);
     position: relative;
@@ -88,6 +107,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
 }
 
 canvas {
@@ -105,12 +125,24 @@ canvas {
     box-shadow: 0 0 10px var(--neon-blue);
     animation: scan 2s linear infinite;
     opacity: 0.5;
+    pointer-events: none;
 }
 
 @keyframes scan {
-    0% { top: 0%; box-shadow: 0 0 10px var(--neon-blue); }
-    50% { top: 100%; box-shadow: 0 0 20px var(--neon-pink); }
-    100% { top: 0%; box-shadow: 0 0 10px var(--neon-blue); }
+    0% {
+        top: 0%;
+        box-shadow: 0 0 10px var(--neon-blue);
+    }
+
+    50% {
+        top: 100%;
+        box-shadow: 0 0 20px var(--neon-pink);
+    }
+
+    100% {
+        top: 0%;
+        box-shadow: 0 0 10px var(--neon-blue);
+    }
 }
 
 /* Result Area */
@@ -123,6 +155,17 @@ canvas {
     align-items: center;
     background: #000;
     overflow: hidden;
+    min-height: 0;
+    /* Important for flex child scrolling */
+}
+
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #generatedImage {
@@ -131,12 +174,41 @@ canvas {
     object-fit: contain;
     border: 2px solid var(--neon-pink);
     box-shadow: 0 0 30px rgba(255, 0, 255, 0.2);
+    /* Allow long press on mobile */
+    pointer-events: auto;
+    z-index: 5;
+}
+
+.download-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--neon-blue);
+    color: var(--neon-blue);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    z-index: 20;
+    /* Above image */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.download-btn:hover {
+    background: var(--neon-blue);
+    color: black;
 }
 
 .loading-overlay {
     position: absolute;
     inset: 0;
-    display: none; /* Flex when active */
+    display: none;
+    /* Flex when active */
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -153,34 +225,52 @@ canvas {
     animation: spin 1s linear infinite;
 }
 
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 .loading-text {
     margin-top: 15px;
     color: var(--neon-blue);
     font-family: var(--font-orbitron);
     animation: pulse 1s infinite alternate;
+    font-size: 0.9rem;
 }
 
-@keyframes pulse { from { opacity: 0.5; } to { opacity: 1; } }
+@keyframes pulse {
+    from {
+        opacity: 0.5;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
 
 /* Controls */
 .controls {
-    padding: 20px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
     align-items: center;
     background: rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
 }
 
 .cyber-btn {
     background: transparent;
     border: 2px solid var(--neon-pink);
     color: var(--neon-pink);
-    padding: 15px 40px;
+    padding: 12px 30px;
     font-family: var(--font-orbitron);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -190,24 +280,53 @@ canvas {
     max-width: 300px;
     text-transform: uppercase;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    /* Prevent text selection on rapid clicks */
+}
+
+.cyber-btn.active {
+    background: var(--neon-pink);
+    color: black;
+    box-shadow: 0 0 15px var(--neon-pink);
 }
 
 .cyber-btn:hover {
-    background: var(--neon-pink);
-    color: #000;
-    box-shadow: 0 0 20px var(--neon-pink);
+    background: rgba(255, 0, 255, 0.1);
+    box-shadow: 0 0 10px var(--neon-pink);
 }
 
 .cyber-btn:active {
     transform: scale(0.98);
 }
 
+/* Secondary Button Style (Reset) */
+.secondary-btn {
+    border-color: var(--neon-blue);
+    color: var(--neon-blue);
+}
+
+.secondary-btn:hover {
+    background: rgba(0, 243, 255, 0.1);
+    box-shadow: 0 0 10px var(--neon-blue);
+}
+
+.btn-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    pointer-events: none;
+}
+
 .status-bar {
     display: flex;
-    gap: 20px;
+    gap: 15px;
     font-family: monospace;
     color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    margin-top: 5px;
 }
 
 .status-item span {
@@ -217,12 +336,38 @@ canvas {
 
 .identity-data {
     position: absolute;
-    bottom: 10px;
-    left: 10px;
-    background: rgba(0, 0, 0, 0.8);
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.85);
     padding: 10px;
-    border: 1px solid var(--neon-blue);
+    border-top: 1px solid var(--neon-blue);
     font-size: 0.8rem;
     color: var(--neon-blue);
     display: none;
+    z-index: 15;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 600px) {
+    .container {
+        height: 100dvh;
+        max-width: 100%;
+        border: none;
+        clip-path: none;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .visualizer-container {
+        height: 80px;
+    }
+
+    .cyber-btn {
+        padding: 15px;
+        /* Larger touch target */
+        font-size: 1rem;
+    }
 }

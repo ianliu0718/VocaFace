@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Voice Identity | 語音捏臉</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
+    <div class="watermark">v1.0</div>
     <div class="container">
         <header>
-            <h1>VOICE IDENTITY</h1>
-            <p class="subtitle">SYSTEM STANDBY... WAITING FOR AUDIO INPUT</p>
+            <h1>語音捏臉</h1>
+            <p class="subtitle">系統待命... 等待語音輸入</p>
         </header>
 
         <main>
@@ -26,9 +31,16 @@
             <div class="result-container" id="resultContainer">
                 <div class="loading-overlay" id="loadingOverlay">
                     <div class="loader"></div>
-                    <div class="loading-text">GENERATING IDENTITY...</div>
+                    <div class="loading-text">正在分析聲紋特徵...</div>
                 </div>
-                <img id="generatedImage" alt="Generated Identity" src="" style="display: none;">
+
+                <div class="image-wrapper" id="imageWrapper">
+                    <img id="generatedImage" alt="Generated Identity" src="" style="display: none;">
+                    <button id="downloadBtn" class="action-btn download-btn" style="display: none;" title="下載圖片">
+                        ⬇
+                    </button>
+                </div>
+
                 <div class="identity-data" id="identityData">
                     <!-- Dynamic Data will be injected here -->
                 </div>
@@ -39,13 +51,20 @@
             <button id="recordBtn" class="cyber-btn">
                 <span class="btn-content">
                     <span class="icon">🎙️</span>
-                    <span class="text">HOLD TO ANALYZE</span>
+                    <span class="text">按住說話</span>
                 </span>
                 <span class="glitch-effect"></span>
             </button>
+            <button id="resetBtn" class="cyber-btn secondary-btn" style="display: none;">
+                <span class="btn-content">
+                    <span class="icon">🔄</span>
+                    <span class="text">重新開始</span>
+                </span>
+            </button>
+
             <div class="status-bar">
-                <div class="status-item">PITCH: <span id="pitchValue">--</span> Hz</div>
-                <div class="status-item">VOL: <span id="volValue">--</span> dB</div>
+                <div class="status-item">頻率: <span id="pitchValue">--</span> Hz</div>
+                <div class="status-item">音量: <span id="volValue">--</span> dB</div>
             </div>
         </div>
     </div>
@@ -53,4 +72,5 @@
     <script src="audio_engine.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>

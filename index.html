@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Identity | 語音捏臉</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>VOICE IDENTITY</h1>
+            <p class="subtitle">SYSTEM STANDBY... WAITING FOR AUDIO INPUT</p>
+        </header>
+
+        <main>
+            <div class="visualizer-container">
+                <canvas id="visualizerCanvas"></canvas>
+                <div class="scanner-line"></div>
+                <div class="holo-circle"></div>
+            </div>
+
+            <div class="result-container" id="resultContainer">
+                <div class="loading-overlay" id="loadingOverlay">
+                    <div class="loader"></div>
+                    <div class="loading-text">GENERATING IDENTITY...</div>
+                </div>
+                <img id="generatedImage" alt="Generated Identity" src="" style="display: none;">
+                <div class="identity-data" id="identityData">
+                    <!-- Dynamic Data will be injected here -->
+                </div>
+            </div>
+        </main>
+
+        <div class="controls">
+            <button id="recordBtn" class="cyber-btn">
+                <span class="btn-content">
+                    <span class="icon">🎙️</span>
+                    <span class="text">HOLD TO ANALYZE</span>
+                </span>
+                <span class="glitch-effect"></span>
+            </button>
+            <div class="status-bar">
+                <div class="status-item">PITCH: <span id="pitchValue">--</span> Hz</div>
+                <div class="status-item">VOL: <span id="volValue">--</span> dB</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="audio_engine.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

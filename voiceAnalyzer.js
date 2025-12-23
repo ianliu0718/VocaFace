@@ -52,8 +52,8 @@ class VoiceAnalyzer {
             return true;
         } catch (error) {
             console.error('Error initializing audio:', error);
-            alert('無法訪問麥克風。請確認已授權麥克風權限。');
-            return false;
+            // Error will be handled by the calling function
+            throw new Error('無法訪問麥克風。請確認已授權麥克風權限。');
         }
     }
 

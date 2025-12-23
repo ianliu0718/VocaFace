@@ -1,6 +1,8 @@
 // Avatar Generator - Creates 3D-style portraits based on voice features
 class AvatarGenerator {
     constructor(canvas) {
+        this.HAIR_STRAND_RANDOM_OFFSET = 10;
+        this.HAIR_STRAND_RANDOM_CENTER = 5;
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.width = canvas.width;
@@ -240,7 +242,7 @@ class AvatarGenerator {
             this.ctx.beginPath();
             this.ctx.moveTo(startX, startY);
             this.ctx.quadraticCurveTo(
-                startX + Math.random() * 10 - 5,
+                startX + Math.random() * this.HAIR_STRAND_RANDOM_OFFSET - this.HAIR_STRAND_RANDOM_CENTER,
                 (startY + endY) / 2,
                 endX,
                 endY

@@ -1,6 +1,7 @@
 // Main Application - Coordinates voice analysis and avatar generation
 class VocaFaceApp {
     constructor() {
+        this.GENERATION_DELAY_MS = 500; // Delay for avatar generation effect
         this.voiceAnalyzer = new VoiceAnalyzer();
         this.avatarGenerator = null;
         this.visualizerCanvas = document.getElementById('visualizer');
@@ -41,8 +42,13 @@ class VocaFaceApp {
     async startRecording() {
         // Initialize audio on first use
         if (!this.voiceAnalyzer.audioContext) {
-            const initialized = await this.voiceAnalyzer.initialize();
-            if (!initialized) return;
+            try {
+                const initialized = await this.voiceAnalyzer.initialize();
+                if (!initialized) return;
+            } catch (error) {
+                this.updateStatus('錯誤：' + error.message, 'recording');
+                return;
+            }
         }
 
         this.recordBtn.disabled = true;
@@ -159,7 +165,7 @@ class VocaFaceApp {
             this.downloadBtn.style.display = 'inline-flex';
             this.generateBtn.disabled = false;
             this.generateBtn.querySelector('.text').textContent = '重新生成';
-        }, 500);
+        }, this.GENERATION_DELAY_MS);
     }
 
     downloadAvatar() {

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VocaFace - 語音捏臉小遊戲</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎤 VocaFace</h1>
+            <p class="subtitle">用你的聲音創造獨特的 3D 人像</p>
+        </header>
+
+        <main>
+            <div class="section recording-section">
+                <h2>步驟 1：錄製你的聲音</h2>
+                <p class="instruction">點擊麥克風按鈕，說話 3-5 秒鐘</p>
+                
+                <div class="controls">
+                    <button id="recordBtn" class="btn btn-primary">
+                        <span class="icon">🎤</span>
+                        <span class="text">開始錄音</span>
+                    </button>
+                    <button id="stopBtn" class="btn btn-secondary" disabled>
+                        <span class="icon">⏹️</span>
+                        <span class="text">停止錄音</span>
+                    </button>
+                </div>
+
+                <div class="audio-visualizer">
+                    <canvas id="visualizer" width="600" height="100"></canvas>
+                </div>
+
+                <div id="recordingStatus" class="status"></div>
+            </div>
+
+            <div class="section analysis-section">
+                <h2>步驟 2：分析聲音特徵</h2>
+                <div id="analysisResults" class="analysis-results">
+                    <div class="feature-card">
+                        <div class="feature-label">音高</div>
+                        <div class="feature-value" id="pitchValue">--</div>
+                        <div class="feature-bar">
+                            <div class="feature-fill" id="pitchBar"></div>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-label">音量</div>
+                        <div class="feature-value" id="volumeValue">--</div>
+                        <div class="feature-bar">
+                            <div class="feature-fill" id="volumeBar"></div>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-label">語調變化</div>
+                        <div class="feature-value" id="toneValue">--</div>
+                        <div class="feature-bar">
+                            <div class="feature-fill" id="toneBar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section avatar-section">
+                <h2>步驟 3：生成你的專屬人像</h2>
+                <div class="avatar-container">
+                    <canvas id="avatarCanvas" width="400" height="400"></canvas>
+                </div>
+                <button id="generateBtn" class="btn btn-primary btn-large" disabled>
+                    <span class="icon">✨</span>
+                    <span class="text">生成人像</span>
+                </button>
+                <button id="downloadBtn" class="btn btn-secondary" style="display: none;">
+                    <span class="icon">💾</span>
+                    <span class="text">下載圖片</span>
+                </button>
+            </div>
+        </main>
+
+        <footer>
+            <p>使用 Web Audio API 進行聲音分析 • 即時生成 3D 風格人像</p>
+        </footer>
+    </div>
+
+    <script src="voiceAnalyzer.js"></script>
+    <script src="avatarGenerator.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
